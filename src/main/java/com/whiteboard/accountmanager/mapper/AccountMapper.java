@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 
 public class AccountMapper extends NewAccountResponsePresentation {
     public static NewAccountResponsePresentation toAccountMapper(NewAccountRequestPresentation dadosConta) {
-        var dataAcconutResponse = new NewAccountResponsePresentation();
+        NewAccountResponsePresentation dataAcconutResponse = new NewAccountResponsePresentation();
         dataAcconutResponse.id(0l);
         dataAcconutResponse.nome(dadosConta.getNome());
         dataAcconutResponse.cpf(dadosConta.getCpf());
