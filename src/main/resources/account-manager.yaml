@@ -3,15 +3,11 @@ info:
   title: Account-manager WhiteBoard
   description: Componente responsável por criar e gerenciar contas.
   version: 0.0.1
-host: localhost
-basePatch: /v1
 tags:
   - name: Conta
     description: Operações do usuário
   - name: Validação
     description: Permissões de acesso
-schemes:
-  - http
 paths:
   /new/user:
     post:
@@ -100,4 +96,4 @@ components:
         status:
           type: string
           description: Como se encontra a conta A | B | F
-          example: A
+          example: "A"

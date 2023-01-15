@@ -166,6 +166,28 @@
             <artifactId>junit</artifactId>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.2.32</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.classgraph</groupId>
+            <artifactId>classgraph</artifactId>
+            <version>4.8.154</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>0.2.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -192,9 +214,10 @@
             </plugin>
 
             <plugin>
+                <!-- This 2019 version is required for OpenAPI 3 -->
                 <groupId>io.swagger.codegen.v3</groupId>
                 <artifactId>swagger-codegen-maven-plugin</artifactId>
-                <version>3.0.31</version>
+                <version>3.0.8</version>
                 <dependencies>
                     <dependency>
                         <groupId>com.github.jknack</groupId>
@@ -209,18 +232,22 @@
                         </goals>
                         <configuration>
                             <inputSpec>${project.basedir}/src/main/resources/account-manager.yaml</inputSpec>
-                            <language>java</language>
-                            <library>resttemplate</library>
-                            <apiPackage>com.codegen.rest.api</apiPackage>
+                            <language>spring</language>
+                            <packageName>com.codegen.rest</packageName>
                             <modelPackage>com.codegen.rest.model</modelPackage>
+                            <library>spring-boot</library>
+                            <apiPackage>com.codegen.rest.api</apiPackage>
                             <invokerPackage>com.codegen.rest.invoker</invokerPackage>
-                            <output>${project.build.directory}/generated-sources</output>
                             <configOptions>
-                                <sourceFolder>src/main/java</sourceFolder>
-                                <dateLibrary>java8</dateLibrary>
-                                <useTags>true</useTags>
-                            </configOptions>
+                                <groupId>${project.groupId}</groupId>
+                                <artifactId>${project.artifactId}</artifactId>
+                                <artifactVersion>${project.version}</artifactVersion>
 
+                                <java8>true</java8>
+                                <dateLibrary>java8</dateLibrary>
+                                <licenseName>Apache 2.0</licenseName>
+                                <licenseUrl>https://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+                            </configOptions>
                         </configuration>
                     </execution>
                 </executions>
