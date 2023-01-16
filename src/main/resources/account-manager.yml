@@ -2,21 +2,20 @@ openapi: 3.0.3
 info:
   title: Account-manager WhiteBoard
   description: Componente responsável por criar e gerenciar contas.
-  version: 0.0.1
-host: localhost
-basePatch: /v1
+  version: 1.0.0
 tags:
   - name: Conta
     description: Operações do usuário
   - name: Validação
     description: Permissões de acesso
-schemes:
-  - http
+servers:
+  - url: http://localhost
 paths:
-  /new/user:
+  /v1/new/user:
     post:
       tags:
         - Conta
+      operationId: createNewUser
       summary: Cria uma nova conta
       description: Gera uma nova conta no site.
       requestBody:
@@ -96,7 +95,6 @@ components:
           format: date
         dataInclusao:
           type: string
-          exemple: "2023-01-15T02:47:00Z"
         status:
           type: string
           description: Como se encontra a conta A | B | F

@@ -6,7 +6,7 @@ import com.whiteboard.accountmanager.utils.DataUtils;
 
 import java.time.OffsetDateTime;
 
-public class AccountMapper extends NewAccountResponsePresentation {
+public class AccountMapper {
     public static NewAccountResponsePresentation toAccountMapper(NewAccountRequestPresentation dadosConta) {
         var dataAcconutResponse = new NewAccountResponsePresentation();
         dataAcconutResponse.id(0l);
