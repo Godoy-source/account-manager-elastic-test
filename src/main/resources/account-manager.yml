@@ -33,13 +33,40 @@ paths:
                 $ref: '#/components/schemas/NewAccountResponsePresentation'
         '400':
           description: Dados de cadastros inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroNegocioPresentation'
         '500':
           description: Ocorreu um erro interno
-        '503':
-          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroPresentation'
 components:
   schemas:
-    Endereco:
+    ErroPresentation:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 500
+        message:
+          type: string
+          example: "Erro de validacao"
+        correlationError:
+          type: string
+          example: "ERRO_PARAMETROS_INVALIDOS"
+    ErroNegocioPresentation:
+      type: object
+      properties:
+        code:
+          type: string
+          example: "500"
+        message:
+          type: string
+          example: "Erro de validacao"
+    EnderecoPresentation:
       type: object
       properties:
         rua:
@@ -62,13 +89,12 @@ components:
           example: "Gabriel"
         cpf:
           type: string
-          format: int64
           example: "00000000000"
         email:
           type: string
           example: "teste@gmail.com"
         endereco:
-          $ref: '#/components/schemas/Endereco'
+          $ref: '#/components/schemas/EnderecoPresentation'
         dataNascimento:
           type: string
           format: date
@@ -76,9 +102,8 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
-          example: 0
+          type: string
+          example: "f3de6149-da14-4716-bfe4-cbbcc74702a7"
         nome:
           type: string
           example: "Gabriel"
@@ -89,13 +114,14 @@ components:
           type: string
           example: "teste@gmail.com"
         endereco:
-          $ref: '#/components/schemas/Endereco'
+          $ref: '#/components/schemas/EnderecoPresentation'
         dataNascimento:
           type: string
           format: date
-        dataInclusao:
-          type: string
         status:
           type: string
           description: Como se encontra a conta A | B | F
-          example: A
+          example: "A"
+        dataInclusao:
+          type: string
+
