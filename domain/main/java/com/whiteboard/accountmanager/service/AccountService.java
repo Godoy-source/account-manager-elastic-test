@@ -10,6 +10,7 @@ import com.whiteboard.accountmanager.utils.DataUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -17,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AccountService {
     private AccountManagerRepositoryImpl repository;
-    public NewAccountResponsePresentation saveDataAccount(NewAccountRequestPresentation dadosConta) throws CadastroNaoEfetivadoException {
+    public NewAccountResponsePresentation saveDataAccount(NewAccountRequestPresentation dadosConta) throws CadastroNaoEfetivadoException, IOException {
         var dadosContaDTO = toSaveAccount(dadosConta);
         return repository.createAccount(dadosContaDTO);
     }

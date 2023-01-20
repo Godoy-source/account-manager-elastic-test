@@ -117,7 +117,6 @@ components:
           $ref: '#/components/schemas/EnderecoPresentation'
         dataNascimento:
           type: string
-          format: date
         status:
           type: string
           description: Como se encontra a conta A | B | F

@@ -18,7 +18,7 @@ public class ExceptionHandler {
                     .message(((CadastroNaoEfetivadoException) e).getDescricaoCodigo()),
                     HttpStatusCode.valueOf(((CadastroNaoEfetivadoException) e).getEnumError().getCodigoHttp()));
         }
-        log.error("Ocorreu um erro não mapeado");
+        log.error("Ocorreu um erro não mapeado. Erro {}", e);
         return new ResponseEntity<>(new ErroPresentation()
                 .code(CodigoErroEnum.ERRO_INTERO.getCodigoHttp())
                 .correlationError(CodigoErroEnum.ERRO_INTERO.getDescricaoCodigo())

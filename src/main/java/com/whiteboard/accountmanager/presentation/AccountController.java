@@ -13,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@AllArgsConstructor
 @RestController
+@AllArgsConstructor
 public class AccountController implements V1Api {
 
     private final AccountService accountService;
