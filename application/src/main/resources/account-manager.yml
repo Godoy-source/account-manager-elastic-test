@@ -30,7 +30,40 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NewAccountResponsePresentation'
+                $ref: '#/components/schemas/AccountResponsePresentation'
+        '400':
+          description: Dados de cadastros inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroNegocioPresentation'
+        '500':
+          description: Ocorreu um erro interno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroPresentation'
+  /v1/user/{usuarioId}:
+    get:
+      tags:
+        - Usuario
+      operationId: findUser
+      summary: Procura por usuário
+      description: Busca pelo usuário no banco de dados.
+      parameters:
+        - name: usuarioId
+          in: path
+          description: ID do usuário.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuário encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponsePresentation'
         '400':
           description: Dados de cadastros inválidos
           content:
@@ -62,7 +95,7 @@ components:
       properties:
         code:
           type: string
-          example: "500"
+          example: "400"
         message:
           type: string
           example: "Erro de validacao"
@@ -98,7 +131,7 @@ components:
         dataNascimento:
           type: string
           format: date
-    NewAccountResponsePresentation:
+    AccountResponsePresentation:
       type: object
       properties:
         id:

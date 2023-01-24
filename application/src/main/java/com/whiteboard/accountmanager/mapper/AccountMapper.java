@@ -1,13 +1,13 @@
 package com.whiteboard.accountmanager.mapper;
 
+import com.codegen.rest.model.AccountResponsePresentation;
 import com.codegen.rest.model.EnderecoPresentation;
-import com.codegen.rest.model.NewAccountResponsePresentation;
 import com.whiteboard.accountmanager.dto.AccountDTO;
 import com.whiteboard.accountmanager.dto.EnderecoDTO;
 
 public class AccountMapper {
-    public static NewAccountResponsePresentation toAccountMapper(AccountDTO dadosConta) {
-        var dataAcconutResponse = new NewAccountResponsePresentation();
+    public static AccountResponsePresentation toAccountMapper(AccountDTO dadosConta) {
+        var dataAcconutResponse = new AccountResponsePresentation();
         dataAcconutResponse.id(dadosConta.getId());
         dataAcconutResponse.nome(dadosConta.getNome());
         dataAcconutResponse.cpf(dadosConta.getCpf());
