@@ -14,6 +14,7 @@ public enum CodigoErroEnum {
     ERRO_DADOS_ENTRADA_TAMANHO_CAMPO("O campo (@campo) não pode ser menor de (@limiteMin) e ser maior de (@limiteMax) caracteres", 400),
     ERRO_DADOS_ENTRADA_VALOR_INVALIDO("O campo (@campo) não pode conter letras.", 400),
     ERRO_DADOS_ENTRADA_NULO("O campo (@campo) é obrigatório.", 400),
+    EROO_DADOS_ENTRADA_CARACTER_NECESSARIO("Email inválido.", 400),
     ERRO_CONTA_ANTERIORMENTE_REGISTRADA("Os dados dessa conta ja se encontram nos nossos registros.", 400),
     ERRO_CONTA_NAO_ENCONTRADA("Não foi possivel encontrar os dados da conta.", 404);
 

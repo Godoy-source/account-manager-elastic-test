@@ -76,9 +76,7 @@ public class AccountManagerRepositoryImpl implements AccountManagerRepository {
         );
         if (response.found()) {
             Gson gson = new Gson();
-            JsonParser parser = new JsonParser();
-            JsonObject object = (JsonObject) parser.parse(response.source().toString());
-            AccountDTO emp = gson.fromJson(object, AccountDTO.class);
+            AccountDTO emp = gson.fromJson(response.source().toString(), AccountDTO.class);
             log.info("Conta encontrada. Fim de consulta de dados");
             return emp;
         } else {
