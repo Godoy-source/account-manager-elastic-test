@@ -4,12 +4,14 @@ package com.whiteboard.accountmanager.service;
 import com.codegen.rest.model.NewAccountRequestPresentation;
 import com.whiteboard.accountmanager.dto.AccountDTO;
 import com.whiteboard.accountmanager.dto.EnderecoDTO;
-import com.whiteboard.accountmanager.exceptions.CadastroNaoEfetivadoException;
+import com.whiteboard.accountmanager.enums.CodigoErroEnum;
+import com.whiteboard.accountmanager.exceptions.CadastroException;
 import com.whiteboard.accountmanager.repository.AccountManagerRepositoryImpl;
 import com.whiteboard.accountmanager.utils.DataUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -18,16 +20,28 @@ import java.util.UUID;
 public class AccountService {
     private AccountManagerRepositoryImpl repository;
 
-    public AccountDTO saveDataAccount(NewAccountRequestPresentation dadosConta) throws CadastroNaoEfetivadoException {
+    public AccountDTO saveDataAccount(NewAccountRequestPresentation dadosConta) throws CadastroException, IOException {
+
+        //if (repository.verifyExists(dadosConta.getCpf())) {
+        //    throw new CadastroException(CodigoErroEnum.ERRO_CONTA_ANTERIORMENTE_REGISTRADA);
+        //}
         var dadosContaDTO = convertPresentationToDTO(dadosConta);
         return repository.createAccount(dadosContaDTO);
+    }
+
+    public AccountDTO getUserAccount(String usuarioId) throws CadastroException, IOException {
+        repository.findAccountByFilter(usuarioId);
+        if (!repository.verifyDocExists(usuarioId)) {
+            throw new CadastroException(CodigoErroEnum.ERRO_CONTA_NAO_ENCONTRADA);
+        }
+        return repository.getAccount(usuarioId);
     }
 
     private static AccountDTO convertPresentationToDTO(NewAccountRequestPresentation dadosConta) {
         var id = UUID.randomUUID();
         return AccountDTO.builder()
                 .id(refatorarID(id))
-                .documento_id(id)
+                .documento_id(id.toString())
                 .nome(dadosConta.getNome())
                 .cpf(dadosConta.getCpf())
                 .email(dadosConta.getEmail())
