@@ -3,6 +3,7 @@ package com.whiteboard.accountmanager.presentation;
 
 import com.codegen.rest.api.V1Api;
 import com.codegen.rest.model.AccountResponsePresentation;
+import com.codegen.rest.model.FiltrosAccountRequestPresentation;
 import com.codegen.rest.model.NewAccountRequestPresentation;
 import com.whiteboard.accountmanager.mapper.AccountMapper;
 import com.whiteboard.accountmanager.presentation.exception.ExceptionHandler;
@@ -12,6 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -36,7 +39,7 @@ public class AccountController implements V1Api {
     }
 
     @Override
-    public ResponseEntity<AccountResponsePresentation> findUser(String usuarioId) {
+    public ResponseEntity<AccountResponsePresentation> findUserByID(String usuarioId) {
         try {
             var busca = accountService.getUserAccount(usuarioId);
             var mapearDadosContaResposta = AccountMapper.toAccountMapper(busca);
@@ -44,5 +47,10 @@ public class AccountController implements V1Api {
         } catch (Exception e) {
             return ExceptionHandler.handle(e);
         }
+    }
+
+    @Override
+    public ResponseEntity<List<AccountResponsePresentation>> findUserByFilter(FiltrosAccountRequestPresentation filtrosAccountRequestPresentation) {
+        return null;
     }
 }

@@ -33,8 +33,6 @@ public class AccountManagerRepositoryImpl implements AccountManagerRepository {
     private final RestTemplate template;
     private final AppConnections connections;
 
-    private final DocTransport transport = new DocTransport();
-
     public AccountManagerRepositoryImpl(RestTemplate template, AppConnections conections) {
         this.template = template;
         this.connections = conections;
@@ -89,8 +87,11 @@ public class AccountManagerRepositoryImpl implements AccountManagerRepository {
     public List<AccountDTO> findAccountByFilter(HashMap<String, String> dadosEntradaMapeados, List<CamposBuscaEnum> filtros) throws IOException {
         log.info("Inicio consulta contas");
         ArrayList<AccountDTO> contas = new ArrayList<>();
+        // Fazer sistema de paginação
         var response = Connecting.getClient().search(s -> s
                         .index("white-board")
+                        .size(100)
+                        .from(0)
                         .query(q -> q
                                 .bool(b -> b
                                         .should(QueryBuilder.montarFiltros(dadosEntradaMapeados, filtros)))),
