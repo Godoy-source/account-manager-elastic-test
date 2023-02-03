@@ -9,15 +9,16 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 
+import java.util.HashMap;
+
 @Slf4j
 @UtilityClass
 public class ValidationUtils {
 
 
-    public void validarCampos(NewAccountRequestPresentation dadosConta) throws CadastroException {
+    public void validarCampos(HashMap<String, String> dadosEntradaMapeados) throws CadastroException {
         log.info("Inicio validação de campos de entrada");
         var camposMapeados = CamposBuscaEnum.listAllCampos();
-        var dadosEntradaMapeados = AccountMapper.mapearDadosEntrada(dadosConta);
 
         for (var campo : camposMapeados) {
             if (campo.getCampo().equals(AccountMapper.getKeyOfMap(dadosEntradaMapeados, campo.getCampo()))) {

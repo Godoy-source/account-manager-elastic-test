@@ -24,8 +24,9 @@ public class AccountController implements V1Api {
     public ResponseEntity<AccountResponsePresentation> createNewUser(NewAccountRequestPresentation dadosConta) {
         try {
             log.info("Iniciando registro de nova conta");
-            ValidationUtils.validarCampos(dadosConta);
-            var registro = accountService.saveDataAccount(dadosConta);
+            var dadosEntradaMapeados = AccountMapper.mapearDadosEntrada(dadosConta);
+            ValidationUtils.validarCampos(dadosEntradaMapeados);
+            var registro = accountService.saveDataAccount(dadosConta, dadosEntradaMapeados);
             var mapearDadosContaResposta = AccountMapper.toAccountMapper(registro);
             log.info("Fim registro de nova conta");
             return ResponseEntity.ok().body(mapearDadosContaResposta);

@@ -1,28 +1,30 @@
 package com.whiteboard.accountmanager.repository;
 
-import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
+import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import co.elastic.clients.elasticsearch.core.*;
-import com.codegen.rest.model.NewAccountRequestPresentation;
+import co.elastic.clients.util.ObjectBuilder;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.whiteboard.accountmanager.configuration.AppConnections;
 import com.whiteboard.accountmanager.connections.elasticsearch.Connecting;
 import com.whiteboard.accountmanager.connections.elasticsearch.DocTransport;
 import com.whiteboard.accountmanager.dto.AccountDTO;
+import com.whiteboard.accountmanager.enums.CamposBuscaEnum;
 import com.whiteboard.accountmanager.enums.CodigoErroEnum;
 import com.whiteboard.accountmanager.exceptions.CadastroException;
 import com.whiteboard.accountmanager.mapper.QueryBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.client.Response;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import static com.whiteboard.accountmanager.mapper.QueryBuilder.montarFiltros;
 
 @Slf4j
 @Repository
@@ -68,7 +70,6 @@ public class AccountManagerRepositoryImpl implements AccountManagerRepository {
     @Override
     public AccountDTO getAccount(String usuarioId) throws IOException {
         log.info("Inicio consulta dados da conta {} no Elastic", usuarioId);
-
         var response = Connecting.getClient().get(g -> g
                         .index("white-board")
                         .id(usuarioId),
@@ -84,13 +85,23 @@ public class AccountManagerRepositoryImpl implements AccountManagerRepository {
         }
     }
 
-    public AccountDTO findAccountByFilter(String usuarioId) throws IOException {
-
+    @Override
+    public List<AccountDTO> findAccountByFilter(HashMap<String, String> dadosEntradaMapeados, List<CamposBuscaEnum> filtros) throws IOException {
+        log.info("Inicio consulta contas");
+        ArrayList<AccountDTO> contas = new ArrayList<>();
         var response = Connecting.getClient().search(s -> s
                         .index("white-board")
-                        .query(QueryBuilder.addQuery(usuarioId)),
+                        .query(q -> q
+                                .bool(b -> b
+                                        .should(QueryBuilder.montarFiltros(dadosEntradaMapeados, filtros)))),
                 ObjectNode.class);
-        return null;
+        for (var hit : response.hits().hits()) {
+            Gson gson = new Gson();
+            var emp = gson.fromJson(hit.source().toString(), AccountDTO.class);
+            contas.add(emp);
+        }
+        log.info("Fim de consulta de contas, total de contas encontradas: {}", contas.size());
+        return contas;
     }
 
     public boolean verifyDocExists(String usuarioId) throws IOException {

@@ -26,7 +26,7 @@ public class AccountMapper {
         return dataAcconutResponse;
     }
 
-    public static Map<String, String> mapearDadosEntrada(NewAccountRequestPresentation dadosEntrada) {
+    public static HashMap<String, String> mapearDadosEntrada(NewAccountRequestPresentation dadosEntrada) {
         var map = new HashMap<String, String>();
         map.put(CamposBuscaEnum.CAMPO_NOME.getCampo(), dadosEntrada.getNome());
         map.put(CamposBuscaEnum.CAMPO_CPF.getCampo(), dadosEntrada.getCpf());
