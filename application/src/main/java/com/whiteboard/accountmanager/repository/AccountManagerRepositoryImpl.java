@@ -1,13 +1,10 @@
 package com.whiteboard.accountmanager.repository;
 
-import co.elastic.clients.elasticsearch._types.query_dsl.*;
-import co.elastic.clients.elasticsearch.core.*;
-import co.elastic.clients.util.ObjectBuilder;
+import co.elastic.clients.elasticsearch.core.IndexRequest;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
 import com.whiteboard.accountmanager.configuration.AppConnections;
 import com.whiteboard.accountmanager.connections.elasticsearch.Connecting;
-import com.whiteboard.accountmanager.connections.elasticsearch.DocTransport;
 import com.whiteboard.accountmanager.dto.AccountDTO;
 import com.whiteboard.accountmanager.enums.CamposBuscaEnum;
 import com.whiteboard.accountmanager.enums.CodigoErroEnum;
@@ -16,15 +13,11 @@ import com.whiteboard.accountmanager.mapper.QueryBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static com.whiteboard.accountmanager.mapper.QueryBuilder.montarFiltros;
 
 @Slf4j
 @Repository

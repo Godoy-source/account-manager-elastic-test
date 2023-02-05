@@ -1,6 +1,5 @@
 package com.whiteboard.accountmanager.utils;
 
-import com.codegen.rest.model.NewAccountRequestPresentation;
 import com.whiteboard.accountmanager.enums.CamposBuscaEnum;
 import com.whiteboard.accountmanager.enums.CodigoErroEnum;
 import com.whiteboard.accountmanager.exceptions.CadastroException;
@@ -19,7 +18,6 @@ public class ValidationUtils {
     public void validarCampos(HashMap<String, String> dadosEntradaMapeados) throws CadastroException {
         log.info("Inicio validação de campos de entrada");
         var camposMapeados = CamposBuscaEnum.listAllCampos();
-
         for (var campo : camposMapeados) {
             if (campo.getCampo().equals(AccountMapper.getKeyOfMap(dadosEntradaMapeados, campo.getCampo()))) {
                 validarValorExiste(campo.getCampo(), dadosEntradaMapeados.get(campo.getCampo()));

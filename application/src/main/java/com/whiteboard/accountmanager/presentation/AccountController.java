@@ -41,8 +41,10 @@ public class AccountController implements V1Api {
     @Override
     public ResponseEntity<AccountResponsePresentation> findUserByID(String usuarioId) {
         try {
+            log.info("Iniciando busca conta por ID documento");
             var busca = accountService.getUserAccount(usuarioId);
             var mapearDadosContaResposta = AccountMapper.toAccountMapper(busca);
+            log.info("Finalizando busca conta por ID documento");
             return ResponseEntity.ok().body(mapearDadosContaResposta);
         } catch (Exception e) {
             return ExceptionHandler.handle(e);

@@ -201,7 +201,7 @@ components:
         properties:
           campo:
             type: string
-            example: "cpf"
+            enum: ["nome", "cpf", "email", "dataNascimento", "status", "dataInclusao"]
           valor:
             type: string
             example: "00000000000"
