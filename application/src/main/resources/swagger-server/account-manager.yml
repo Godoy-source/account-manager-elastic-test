@@ -127,9 +127,9 @@ components:
     ErroNegocioPresentation:
       type: object
       properties:
-        code:
+        enumError:
           type: string
-          example: "400"
+          example: "ERRO_INTERO"
         message:
           type: string
           example: "Erro de validacao"
@@ -194,8 +194,8 @@ components:
       type: object
       properties:
         filtros:
-          $ref: '#/components/schemas/FiltroPresentation'
-    FiltroPresentation:
+          $ref: '#/components/schemas/FiltrosModels'
+    FiltrosModels:
       type: array
       items:
         properties:

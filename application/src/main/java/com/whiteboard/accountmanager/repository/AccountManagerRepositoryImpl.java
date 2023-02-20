@@ -46,7 +46,7 @@ public class AccountManagerRepositoryImpl implements AccountManagerRepository {
         try {
             log.info("Chamando a base para registrar nova conta");
             IndexRequest<AccountDTO> request = IndexRequest.of(i -> i
-                    .index("white-board")
+                    .index("white-board-accounts")
                     .id(dadosConta.getCpf())
                     .document(dadosConta));
             Connecting.getClient().index(request);
@@ -62,7 +62,7 @@ public class AccountManagerRepositoryImpl implements AccountManagerRepository {
     public AccountDTO getAccount(String usuarioId) throws IOException {
         log.info("Inicio consulta dados da conta {} no Elastic", usuarioId);
         var response = Connecting.getClient().get(g -> g
-                        .index("white-board")
+                        .index("white-board-accounts")
                         .id(usuarioId),
                 ObjectNode.class
         );
@@ -82,7 +82,7 @@ public class AccountManagerRepositoryImpl implements AccountManagerRepository {
         ArrayList<AccountDTO> contas = new ArrayList<>();
         // Fazer sistema de paginação
         var response = Connecting.getClient().search(s -> s
-                        .index("white-board")
+                        .index("white-board-accounts")
                         .size(100)
                         .from(0)
                         .query(q -> q
@@ -101,7 +101,7 @@ public class AccountManagerRepositoryImpl implements AccountManagerRepository {
     public boolean verifyDocExists(String usuarioId) throws IOException {
         try {
             return Connecting.getClient().exists(builder -> builder
-                    .index("white-board")
+                    .index("white-board-accounts")
                     .id(usuarioId)
                     .storedFields("_none_")).value();
         } catch (Exception e) {

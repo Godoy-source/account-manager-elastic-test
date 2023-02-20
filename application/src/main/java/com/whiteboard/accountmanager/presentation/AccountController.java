@@ -53,6 +53,13 @@ public class AccountController implements V1Api {
 
     @Override
     public ResponseEntity<List<AccountResponsePresentation>> findUserByFilter(FiltrosAccountRequestPresentation filtrosAccountRequestPresentation) {
-        return null;
+        try {
+            log.info("Iniciando busca de conta por filtros");
+            //var busca =
+            log.info("Fim busca de costas por filtros");
+            return null;
+        } catch (Exception e) {
+            return ExceptionHandler.handle(e);
+        }
     }
 }

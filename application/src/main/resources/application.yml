@@ -3,11 +3,6 @@ spring:
     name: account-manager
 server:
   port: 9090
-
-
-
-
-
 logging:
   path: application/src/main/resources/logback.xml
 

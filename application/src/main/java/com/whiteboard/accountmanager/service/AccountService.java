@@ -10,6 +10,7 @@ import com.whiteboard.accountmanager.exceptions.CadastroException;
 import com.whiteboard.accountmanager.repository.AccountManagerRepositoryImpl;
 import com.whiteboard.accountmanager.utils.DataUtils;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @AllArgsConstructor
 public class AccountService {
     private AccountManagerRepositoryImpl repository;
@@ -28,6 +30,7 @@ public class AccountService {
         var camposParaPesquisa = CamposBuscaEnum.listSearchCampos();
         var verificarRegistro = repository.findAccountByFilter(dadosEntradaMapeados, camposParaPesquisa);
         if (ObjectUtils.isNotEmpty(verificarRegistro)) {
+            log.error("Os dados para {} ja se encontram nos nossos registros.", dadosConta.getCpf());
             throw new CadastroException(CodigoErroEnum.ERRO_CONTA_ANTERIORMENTE_REGISTRADA);
         }
         var dadosContaDTO = convertPresentationToDTO(dadosConta);
@@ -36,6 +39,7 @@ public class AccountService {
 
     public AccountDTO getUserAccount(String usuarioId) throws CadastroException, IOException {
         if (!repository.verifyDocExists(usuarioId)) {
+            log.error("Não foi possivel encontrar os dados da conta: {}", usuarioId);
             throw new CadastroException(CodigoErroEnum.ERRO_CONTA_NAO_ENCONTRADA);
         }
         return repository.getAccount(usuarioId);
