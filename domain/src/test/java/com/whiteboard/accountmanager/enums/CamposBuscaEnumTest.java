@@ -19,6 +19,6 @@ public class CamposBuscaEnumTest {
     @Test
     void listarTodosOsCampos_sucesso() {
         var enuns = CamposBuscaEnum.listAllCampos();
-        Assertions.assertEquals(8, enuns.size());
+        Assertions.assertEquals(10, enuns.size());
     }
 }

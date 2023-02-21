@@ -9,19 +9,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FiltroMapper {
-    public static List<FiltroDTO> toFiltroMapper(FiltrosAccountRequestPresentation filtrosAccountRequestPresentation) {
+    public static List<FiltroDTO> toFiltroMapper(FiltrosAccountRequestPresentation filtrosAccountRequestPresentation)  {
         return filtrosAccountRequestPresentation.getFiltros()
                 .stream()
-                .filter(filtro -> filtro.getValor() != null)
                 .map(filtro -> FiltroDTO.builder()
                         .correlationEnumBusca(CamposBuscaEnum.buscarEnumByCampo(filtro.getCampo().getValue()))
+                        .de(filtro.getDe())
+                        .para(filtro.getPara())
                         .valor(filtro.getValor())
                         .build())
                 .collect(Collectors.toList());
     }
 
     public static List<FiltroDTO> montarFiltrosDadosEntrada(HashMap<String, String> dadosEntradaMapeados) {
-        var pesquisarPor = CamposBuscaEnum.listSearchCampos();
+        var pesquisarPor = CamposBuscaEnum.listSearchCamposPrimarios();
         return pesquisarPor.stream()
                 .map(filtro -> FiltroDTO.builder()
                         .correlationEnumBusca(filtro)

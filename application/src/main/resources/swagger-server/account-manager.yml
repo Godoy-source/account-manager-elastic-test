@@ -186,7 +186,9 @@ components:
           type: string
         status:
           type: string
-          description: Como se encontra a conta A | B | F
+          enum: ["A", "B", "D"]
+          description: Como se encontra a conta A | B | D
+          default: "A"
           example: "A"
         dataInclusao:
           type: string
@@ -202,7 +204,11 @@ components:
       properties:
         campo:
           type: string
-          enum: ["nome", "cpf", "email", "dataNascimento", "status", "dataInclusao"]
+          enum: ["nome", "cpf", "email", "dataNascimento", "status", "dataInclusao", "cidade"]
+        de:
+          type: string
+        para:
+          type: string
         valor:
           type: string
           example: "00000000000"

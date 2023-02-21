@@ -10,5 +10,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class FiltroDTO {
     private CamposBuscaEnum correlationEnumBusca;
+    private String de;
+    private String para;
     private String valor;
 }

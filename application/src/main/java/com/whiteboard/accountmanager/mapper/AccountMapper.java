@@ -20,7 +20,7 @@ public class AccountMapper {
         dataAcconutResponse.email(dadosConta.getEmail());
         dataAcconutResponse.endereco(toConvertEndereco(dadosConta.getEndereco()));
         dataAcconutResponse.dataNascimento(dadosConta.getDataNascimento());
-        dataAcconutResponse.setStatus(dadosConta.getStatus());
+        //dataAcconutResponse.setStatus(dataAcconutResponse.getStatus().fromValue(dadosConta.getStatus()));
         dataAcconutResponse.dataInclusao(dadosConta.getDataInclusao());
         return dataAcconutResponse;
     }
@@ -35,7 +35,7 @@ public class AccountMapper {
             dataAcconutResponse.email(conta.getEmail());
             dataAcconutResponse.endereco(toConvertEndereco(conta.getEndereco()));
             dataAcconutResponse.dataNascimento(conta.getDataNascimento());
-            dataAcconutResponse.setStatus(conta.getStatus());
+            //dataAcconutResponse.setStatus(dataAcconutResponse.getStatus().fromValue(conta.getStatus()));
             dataAcconutResponse.dataInclusao(conta.getDataInclusao());
             listDataAcconutResponse.add(dataAcconutResponse);
         }
@@ -73,15 +73,6 @@ public class AccountMapper {
         map.put(CamposBuscaEnum.CAMPO_ESTADO.getCampo(), dadosEntrada.getEndereco().getEstado());
         map.put(CamposBuscaEnum.CAMPO_DATA_NASCIMENTO.getCampo(), dadosEntrada.getDataNascimento().toString());
         return map;
-    }
-
-    public static String getKeyOfMap(Map<String, String> map, String value) {
-        return map.entrySet()
-                .stream()
-                .filter(entry -> entry.getKey().equals(value))
-                .map(Map.Entry::getKey)
-                .findFirst()
-                .get();
     }
 
     private static EnderecoPresentation toConvertEndereco(EnderecoDTO endereco) {

@@ -3,25 +3,22 @@ package com.whiteboard.accountmanager.utils;
 import com.whiteboard.accountmanager.dto.FiltroDTO;
 import com.whiteboard.accountmanager.enums.CamposBuscaEnum;
 import com.whiteboard.accountmanager.enums.CodigoErroEnum;
-import com.whiteboard.accountmanager.exceptions.CadastroException;
 import com.whiteboard.accountmanager.exceptions.ValidationException;
-import com.whiteboard.accountmanager.mapper.AccountMapper;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 @UtilityClass
 public class ValidationUtils {
 
-    public void validarCampos(HashMap<String, String> dadosEntradaMapeados) throws ValidationException {
-        var camposMapeados = CamposBuscaEnum.listAllCampos();
-        for (var campo : camposMapeados) {
-            if (campo.getCampo().equals(AccountMapper.getKeyOfMap(dadosEntradaMapeados, campo.getCampo()))) {
-                validarValorExiste(campo.getCampo(), dadosEntradaMapeados.get(campo.getCampo()));
-                CamposBuscaEnum.buscarEnumByCampo(campo.getCampo()).getRegra().validar(campo.getCampo(), dadosEntradaMapeados.get(campo.getCampo()));
-            }
+    public void validarCamposEntrada(HashMap<String, String> dadosEntradaMapeados) throws ValidationException {
+        var camposEntrada = new HashSet<>(dadosEntradaMapeados.keySet());
+        for (var campo : camposEntrada) {
+            validarValorExiste(campo, dadosEntradaMapeados.get(campo));
+            CamposBuscaEnum.buscarEnumByCampo(campo).getRegra().validar(campo, dadosEntradaMapeados.get(campo));
         }
     }
 

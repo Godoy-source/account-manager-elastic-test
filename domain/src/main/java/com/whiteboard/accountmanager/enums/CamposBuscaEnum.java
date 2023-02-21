@@ -18,14 +18,16 @@ public enum CamposBuscaEnum {
     CAMPO_RUA("endereco.rua", new CampoRuaRegraStrategy()),
     CAMPO_CIDADE("endereco.cidade", new CampoCidadeRegraStrategy()),
     CAMPO_ESTADO("endereco.estado", new CampoEstadoRegraStrategy()),
-    CAMPO_DATA_NASCIMENTO("dataNascimento", new CampoDataNascimentoRegraStrategy());
+    CAMPO_DATA_NASCIMENTO("dataNascimento", new CampoDataNascimentoRegraStrategy()),
+    CAMPO_STATUS("status", new CampoStatusRegraStrategy()),
+    CAMPO_DT_INCLUSAO("dataInclusao", new CampoDtInclusaoRegraStrategy());
 
-    private String campo;
-    private CamposBuscaStrategy regra;
+    private final String campo;
+    private final CamposBuscaStrategy regra;
 
     public static CamposBuscaEnum buscarEnumByCampo(String campo) {
         return Arrays.stream(CamposBuscaEnum.values())
-                .filter(e -> e.getCampo().equals(campo))
+                .filter(e -> e.getCampo().contains(campo))
                 .findFirst()
                 .orElseThrow();
     }
@@ -34,7 +36,7 @@ public enum CamposBuscaEnum {
         return List.of(CamposBuscaEnum.values());
     }
 
-    public static List<CamposBuscaEnum> listSearchCampos() {
+    public static List<CamposBuscaEnum> listSearchCamposPrimarios() {
         return List.of(CamposBuscaEnum.CAMPO_CPF, CamposBuscaEnum.CAMPO_EMAIL);
     }
 }

@@ -29,7 +29,7 @@ public class AccountController implements V1Api {
         log.info("Iniciando registro de nova conta");
         try {
             var dadosEntradaMapeados = AccountMapper.mapearDadosEntrada(dadosConta);
-            ValidationUtils.validarCampos(dadosEntradaMapeados);
+            ValidationUtils.validarCamposEntrada(dadosEntradaMapeados);
 
             var dadosContaDTO = AccountMapper.convertPresentationToDTO(dadosConta);
             var registro = accountService.saveDataAccount(dadosContaDTO, dadosEntradaMapeados);
