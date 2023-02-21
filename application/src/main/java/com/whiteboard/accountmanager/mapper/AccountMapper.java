@@ -6,11 +6,10 @@ import com.codegen.rest.model.NewAccountRequestPresentation;
 import com.whiteboard.accountmanager.dto.AccountDTO;
 import com.whiteboard.accountmanager.dto.EnderecoDTO;
 import com.whiteboard.accountmanager.enums.CamposBuscaEnum;
+import com.whiteboard.accountmanager.utils.DataUtils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.time.OffsetDateTime;
+import java.util.*;
 
 public class AccountMapper {
     public static AccountResponsePresentation toAccountMapper(AccountDTO dadosConta) {
@@ -26,7 +25,44 @@ public class AccountMapper {
         return dataAcconutResponse;
     }
 
-    public static Map<String, String> mapearDadosEntrada(NewAccountRequestPresentation dadosEntrada) {
+    public static List<AccountResponsePresentation> toAccountListMapper(List<AccountDTO> dadosContas) {
+        List<AccountResponsePresentation> listDataAcconutResponse = new ArrayList<>();
+        for (var conta : dadosContas) {
+            var dataAcconutResponse = new AccountResponsePresentation();
+            dataAcconutResponse.id(conta.getId());
+            dataAcconutResponse.nome(conta.getNome());
+            dataAcconutResponse.cpf(conta.getCpf());
+            dataAcconutResponse.email(conta.getEmail());
+            dataAcconutResponse.endereco(toConvertEndereco(conta.getEndereco()));
+            dataAcconutResponse.dataNascimento(conta.getDataNascimento());
+            dataAcconutResponse.setStatus(conta.getStatus());
+            dataAcconutResponse.dataInclusao(conta.getDataInclusao());
+            listDataAcconutResponse.add(dataAcconutResponse);
+        }
+        return listDataAcconutResponse;
+    }
+
+    public static AccountDTO convertPresentationToDTO(NewAccountRequestPresentation dadosConta) {
+        var id = UUID.randomUUID();
+        return AccountDTO.builder()
+                .id(refatorarID(id))
+                .documento_id(id.toString())
+                .nome(dadosConta.getNome())
+                .cpf(dadosConta.getCpf())
+                .email(dadosConta.getEmail())
+                .endereco(EnderecoDTO.builder()
+                        .cidade(dadosConta.getEndereco().getCidade())
+                        .rua(dadosConta.getEndereco().getRua())
+                        .cep(dadosConta.getEndereco().getCep())
+                        .estado(dadosConta.getEndereco().getEstado())
+                        .build())
+                .dataNascimento(dadosConta.getDataNascimento().toString())
+                .status("A")
+                .dataInclusao(DataUtils.formatOffsetData(OffsetDateTime.now()))
+                .build();
+    }
+
+    public static HashMap<String, String> mapearDadosEntrada(NewAccountRequestPresentation dadosEntrada) {
         var map = new HashMap<String, String>();
         map.put(CamposBuscaEnum.CAMPO_NOME.getCampo(), dadosEntrada.getNome());
         map.put(CamposBuscaEnum.CAMPO_CPF.getCampo(), dadosEntrada.getCpf());
@@ -55,5 +91,10 @@ public class AccountMapper {
         enderecoConverted.setEstado(endereco.getEstado());
         enderecoConverted.setRua(endereco.getRua());
         return enderecoConverted;
+    }
+
+    private static String refatorarID(UUID uuid) {
+        var id = uuid.toString();
+        return id.replaceAll("[a-zA-Z\\-]", "");
     }
 }

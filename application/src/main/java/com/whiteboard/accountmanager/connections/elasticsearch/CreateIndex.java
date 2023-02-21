@@ -14,15 +14,11 @@ public class CreateIndex {
 
     public static void builders() throws Exception {
         ElasticsearchClient client = new ElasticsearchClient(transport);
-
-
-        CreateIndexResponse createResponse = client.indices().create(
-                new CreateIndexRequest.Builder()
-                        .index("WhiteBoard")
-                        .aliases("foo",
-                                new Alias.Builder().isWriteIndex(true).build())
-                        .build()
-        );
+        CreateIndexRequest request = new CreateIndexRequest.Builder()
+                .index("white-board")
+                .build();
+        
+        CreateIndexResponse createResponse = client.indices().create(request);
 
         System.out.println(createResponse);
     }

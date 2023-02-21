@@ -14,10 +14,10 @@ public enum CamposBuscaEnum {
     CAMPO_NOME("nome", new CampoNomeRegraStrategy()),
     CAMPO_CPF("cpf", new CampoCpfRegraStrategy()),
     CAMPO_EMAIL("email", new CampoEmailRegraStrategy()),
-    CAMPO_CEP("cep", new CampoCepRegraStrategy()),
-    CAMPO_RUA("rua", new CampoRuaRegraStrategy()),
-    CAMPO_CIDADE("cidade", new CampoCidadeRegraStrategy()),
-    CAMPO_ESTADO("estado", new CampoEstadoRegraStrategy()),
+    CAMPO_CEP("endereco.cep", new CampoCepRegraStrategy()),
+    CAMPO_RUA("endereco.rua", new CampoRuaRegraStrategy()),
+    CAMPO_CIDADE("endereco.cidade", new CampoCidadeRegraStrategy()),
+    CAMPO_ESTADO("endereco.estado", new CampoEstadoRegraStrategy()),
     CAMPO_DATA_NASCIMENTO("dataNascimento", new CampoDataNascimentoRegraStrategy());
 
     private String campo;
@@ -32,5 +32,9 @@ public enum CamposBuscaEnum {
 
     public static List<CamposBuscaEnum> listAllCampos() {
         return List.of(CamposBuscaEnum.values());
+    }
+
+    public static List<CamposBuscaEnum> listSearchCampos() {
+        return List.of(CamposBuscaEnum.CAMPO_CPF, CamposBuscaEnum.CAMPO_EMAIL);
     }
 }

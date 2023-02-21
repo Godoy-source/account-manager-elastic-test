@@ -1,64 +1,46 @@
 package com.whiteboard.accountmanager.service;
 
 
-import com.codegen.rest.model.NewAccountRequestPresentation;
 import com.whiteboard.accountmanager.dto.AccountDTO;
-import com.whiteboard.accountmanager.dto.EnderecoDTO;
+import com.whiteboard.accountmanager.dto.FiltroDTO;
 import com.whiteboard.accountmanager.enums.CodigoErroEnum;
 import com.whiteboard.accountmanager.exceptions.CadastroException;
+import com.whiteboard.accountmanager.mapper.FiltroMapper;
 import com.whiteboard.accountmanager.repository.AccountManagerRepositoryImpl;
-import com.whiteboard.accountmanager.utils.DataUtils;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.List;
 
 @Service
+@Slf4j
 @AllArgsConstructor
 public class AccountService {
     private AccountManagerRepositoryImpl repository;
 
-    public AccountDTO saveDataAccount(NewAccountRequestPresentation dadosConta) throws CadastroException, IOException {
-
-        //if (repository.verifyExists(dadosConta.getCpf())) {
-        //    throw new CadastroException(CodigoErroEnum.ERRO_CONTA_ANTERIORMENTE_REGISTRADA);
-        //}
-        var dadosContaDTO = convertPresentationToDTO(dadosConta);
-        return repository.createAccount(dadosContaDTO);
+    public AccountDTO saveDataAccount(AccountDTO dadosConta, HashMap<String, String> dadosEntradaMapeados) throws CadastroException {
+        var filtros = FiltroMapper.montarFiltrosDadosEntrada(dadosEntradaMapeados);
+        var contasExistentes = repository.findAccountByFilter(filtros);
+        if (ObjectUtils.isNotEmpty(contasExistentes)) {
+            log.error("Os dados para {} ja se encontram nos nossos registros.", dadosConta.getCpf());
+            throw new CadastroException(CodigoErroEnum.ERRO_CONTA_ANTERIORMENTE_REGISTRADA);
+        }
+        return repository.createAccount(dadosConta);
     }
 
     public AccountDTO getUserAccount(String usuarioId) throws CadastroException, IOException {
-        repository.findAccountByFilter(usuarioId);
         if (!repository.verifyDocExists(usuarioId)) {
+            log.error("Não foi possivel encontrar os dados da conta: {}", usuarioId);
             throw new CadastroException(CodigoErroEnum.ERRO_CONTA_NAO_ENCONTRADA);
         }
         return repository.getAccount(usuarioId);
     }
 
-    private static AccountDTO convertPresentationToDTO(NewAccountRequestPresentation dadosConta) {
-        var id = UUID.randomUUID();
-        return AccountDTO.builder()
-                .id(refatorarID(id))
-                .documento_id(id.toString())
-                .nome(dadosConta.getNome())
-                .cpf(dadosConta.getCpf())
-                .email(dadosConta.getEmail())
-                .endereco(EnderecoDTO.builder()
-                        .cidade(dadosConta.getEndereco().getCidade())
-                        .rua(dadosConta.getEndereco().getRua())
-                        .cep(dadosConta.getEndereco().getCep())
-                        .estado(dadosConta.getEndereco().getEstado())
-                        .build())
-                .dataNascimento(dadosConta.getDataNascimento().toString())
-                .status("A")
-                .dataInclusao(DataUtils.formatOffsetData(OffsetDateTime.now()))
-                .build();
-    }
-
-    private static String refatorarID(UUID uuid) {
-        var id = uuid.toString();
-        return id.replaceAll("[a-zA-Z\\-]", "");
+    public List<AccountDTO> searchAccounts(List<FiltroDTO> filtros) throws CadastroException {
+        return repository.findAccountByFilter(filtros);
     }
 }

@@ -46,9 +46,9 @@ paths:
   /v1/user/{usuarioId}:
     get:
       tags:
-        - Usuario
-      operationId: findUser
-      summary: Procura por usuário
+        - Busca
+      operationId: findUserByID
+      summary: Procura por usuário usando o ID
       description: Busca pelo usuário no banco de dados.
       parameters:
         - name: usuarioId
@@ -64,6 +64,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountResponsePresentation'
+        '400':
+          description: Dados de cadastros inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroNegocioPresentation'
+        '500':
+          description: Ocorreu um erro interno
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErroPresentation'
+  /v1/findUser:
+    post:
+      tags:
+        - Busca
+      operationId: findUserByFilter
+      summary: Procura por usuários usando filtros
+      description: Busca por usuários no banco de dados de acordo com os filtros.
+      requestBody:
+        description: Filtros
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FiltrosAccountRequestPresentation'
+      responses:
+        '200':
+          description: Usuário encontrado
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountResponsePresentation'
         '400':
           description: Dados de cadastros inválidos
           content:
@@ -93,9 +127,9 @@ components:
     ErroNegocioPresentation:
       type: object
       properties:
-        code:
+        enumError:
           type: string
-          example: "400"
+          example: "ERRO_INTERO"
         message:
           type: string
           example: "Erro de validacao"
@@ -156,4 +190,22 @@ components:
           example: "A"
         dataInclusao:
           type: string
+    FiltrosAccountRequestPresentation:
+      type: object
+      properties:
+        filtros:
+          type: array
+          items:
+            $ref: '#/components/schemas/FiltrosModels'
+    FiltrosModels:
+      type: object
+      properties:
+        campo:
+          type: string
+          enum: ["nome", "cpf", "email", "dataNascimento", "status", "dataInclusao"]
+        valor:
+          type: string
+          example: "00000000000"
+
+
 

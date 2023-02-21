@@ -1,9 +1,7 @@
 package com.whiteboard.accountmanager.pattern;
 
-import com.whiteboard.accountmanager.exceptions.CadastroException;
-
-import java.util.Map;
+import com.whiteboard.accountmanager.exceptions.ValidationException;
 
 public interface CamposBuscaStrategy {
-    void validar(String campo, String valor) throws CadastroException;
+    void validar(String campo, String valor) throws ValidationException;
 }
