@@ -195,6 +195,9 @@ components:
     FiltrosAccountRequestPresentation:
       type: object
       properties:
+        modo:
+          type: string
+          enum: ["filtrar", "agregar"]
         filtros:
           type: array
           items:

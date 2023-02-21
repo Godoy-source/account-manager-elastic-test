@@ -1,5 +1,6 @@
 package com.whiteboard.accountmanager.pattern;
 
+import com.whiteboard.accountmanager.dto.FiltroDTO;
 import com.whiteboard.accountmanager.enums.CamposBuscaEnum;
 import com.whiteboard.accountmanager.exceptions.ValidationException;
 import org.junit.jupiter.api.Assertions;
@@ -7,163 +8,263 @@ import org.junit.jupiter.api.Test;
 
 public class CamposBuscaRegraStrategyTest {
 
-    private final String campoNome = CamposBuscaEnum.CAMPO_NOME.getCampo();
-    private final String campoCpf  = CamposBuscaEnum.CAMPO_CPF.getCampo();
-    private final String campoEmail = CamposBuscaEnum.CAMPO_EMAIL.getCampo();
-    private final String campoRua = CamposBuscaEnum.CAMPO_RUA.getCampo();
-    private final String campoCidade = CamposBuscaEnum.CAMPO_CIDADE.getCampo();
-    private final String campoCep = CamposBuscaEnum.CAMPO_CEP.getCampo();
-    private final String campoEstado = CamposBuscaEnum.CAMPO_ESTADO.getCampo();
-    private final String campoDataNascimento = CamposBuscaEnum.CAMPO_DATA_NASCIMENTO.getCampo();
+    private final CamposBuscaEnum campoNome = CamposBuscaEnum.CAMPO_NOME;
+    private final CamposBuscaEnum campoCpf = CamposBuscaEnum.CAMPO_CPF;
+    private final CamposBuscaEnum campoEmail = CamposBuscaEnum.CAMPO_EMAIL;
+    private final CamposBuscaEnum campoRua = CamposBuscaEnum.CAMPO_RUA;
+    private final CamposBuscaEnum campoCidade = CamposBuscaEnum.CAMPO_CIDADE;
+    private final CamposBuscaEnum campoCep = CamposBuscaEnum.CAMPO_CEP;
+    private final CamposBuscaEnum campoEstado = CamposBuscaEnum.CAMPO_ESTADO;
+    private final CamposBuscaEnum campoDataNascimento = CamposBuscaEnum.CAMPO_DATA_NASCIMENTO;
 
     @Test
     void validarRegraCampoNome_sucesso() {
+        var mockNome = FiltroDTO.builder()
+                .correlationEnumBusca(campoNome)
+                .valor("Gabriel")
+                .build();
         Assertions.assertDoesNotThrow(() ->
-                CamposBuscaEnum.buscarEnumByCampo(campoNome).getRegra().validar(campoNome, "Gabriel"));
+                CamposBuscaEnum.buscarEnumByCampo(campoNome.getCampo()).getRegra().validar(mockNome));
     }
 
     @Test
     void validarRegraCampoNome_erroCaracterBloqueado() {
+        var mockNome = FiltroDTO.builder()
+                .correlationEnumBusca(campoNome)
+                .valor("@Gabriel!<>")
+                .build();
         Assertions.assertThrows(ValidationException.class, () ->
-                CamposBuscaEnum.buscarEnumByCampo(campoNome).getRegra().validar(campoNome, "@Gabriel!<>"));
+                CamposBuscaEnum.buscarEnumByCampo(campoNome.getCampo()).getRegra().validar(mockNome));
     }
 
     @Test
     void validarRegraCampoNome_erroTamanho() {
+        var mockNome = FiltroDTO.builder()
+                .correlationEnumBusca(campoNome)
+                .valor("Ga")
+                .build();
         Assertions.assertThrows(ValidationException.class, () ->
-                CamposBuscaEnum.buscarEnumByCampo(campoNome).getRegra().validar(campoNome, "Ga"));
+                CamposBuscaEnum.buscarEnumByCampo(campoNome.getCampo()).getRegra().validar(mockNome));
     }
 
     @Test
     void validarRegraCampoCpf_sucesso() {
+        var mockCpf = FiltroDTO.builder()
+                .correlationEnumBusca(campoCpf)
+                .valor("00000000000")
+                .build();
         Assertions.assertDoesNotThrow(() ->
-                CamposBuscaEnum.buscarEnumByCampo(campoCpf).getRegra().validar(campoCpf, "00000000000"));
+                CamposBuscaEnum.buscarEnumByCampo(campoCpf.getCampo()).getRegra().validar(mockCpf));
     }
 
     @Test
     void validarRegraCampoCpf_erroTamanho() {
+        var mockCpf = FiltroDTO.builder()
+                .correlationEnumBusca(campoCpf)
+                .valor("000000000000")
+                .build();
         Assertions.assertThrows(ValidationException.class, () ->
-                CamposBuscaEnum.buscarEnumByCampo(campoCpf).getRegra().validar(campoCpf, "000000000000"));
+                CamposBuscaEnum.buscarEnumByCampo(campoCpf.getCampo()).getRegra().validar(mockCpf));
     }
 
     @Test
     void validarRegraCampoCpf_erroSomenteNumeros() {
+        var mockCpf = FiltroDTO.builder()
+                .correlationEnumBusca(campoCpf)
+                .valor("0000000A000")
+                .build();
         Assertions.assertThrows(ValidationException.class, () ->
-                CamposBuscaEnum.buscarEnumByCampo(campoCpf).getRegra().validar(campoCpf, "0000000A000"));
+                CamposBuscaEnum.buscarEnumByCampo(campoCpf.getCampo()).getRegra().validar(mockCpf));
     }
 
     @Test
     void validarRegraCampoEmail_sucesso() {
+        var mockEmail = FiltroDTO.builder()
+                .correlationEnumBusca(campoEmail)
+                .valor("gabrielinaciodev@gmail.com")
+                .build();
         Assertions.assertDoesNotThrow(() ->
-                CamposBuscaEnum.buscarEnumByCampo(campoEmail).getRegra().validar(campoEmail, "gabrielinaciodev@gmail.com"));
+                CamposBuscaEnum.buscarEnumByCampo(campoEmail.getCampo()).getRegra().validar(mockEmail));
     }
 
     @Test
     void validarRegraCampoEmail_erroCaracterBloqueado() {
+        var mockEmail = FiltroDTO.builder()
+                .correlationEnumBusca(campoEmail)
+                .valor("gabr<>elinaciodev@gmail.com")
+                .build();
         Assertions.assertThrows(ValidationException.class, () ->
-                CamposBuscaEnum.buscarEnumByCampo(campoEmail).getRegra().validar(campoEmail, "@Gabriel!<>"));
+                CamposBuscaEnum.buscarEnumByCampo(campoEmail.getCampo()).getRegra().validar(mockEmail));
     }
 
     @Test
     void validarRegraCampoEmail_erroTamanho() {
+        var mockEmail = FiltroDTO.builder()
+                .correlationEnumBusca(campoEmail)
+                .valor("ga")
+                .build();
         Assertions.assertThrows(ValidationException.class, () ->
-                CamposBuscaEnum.buscarEnumByCampo(campoEmail).getRegra().validar(campoEmail, "ga"));
+                CamposBuscaEnum.buscarEnumByCampo(campoEmail.getCampo()).getRegra().validar(mockEmail));
     }
 
     @Test
     void validarRegraCampoEmail_erroCaracterNecessario() {
+        var mockEmail = FiltroDTO.builder()
+                .correlationEnumBusca(campoEmail)
+                .valor("gabrielinaciodevgmail.com")
+                .build();
         Assertions.assertThrows(ValidationException.class, () ->
-                CamposBuscaEnum.buscarEnumByCampo(campoEmail).getRegra().validar(campoEmail, "gabrielinaciodevgmail.com"));
+                CamposBuscaEnum.buscarEnumByCampo(campoEmail.getCampo()).getRegra().validar(mockEmail));
     }
 
     @Test
     void validarRegraCampoRua_sucesso() {
+        var mockRua = FiltroDTO.builder()
+                .correlationEnumBusca(campoRua)
+                .valor("Rua do Zé 123")
+                .build();
         Assertions.assertDoesNotThrow(() ->
-                CamposBuscaEnum.buscarEnumByCampo(campoRua).getRegra().validar(campoRua, "Rua do Zé 123"));
+                CamposBuscaEnum.buscarEnumByCampo(campoRua.getCampo()).getRegra().validar(mockRua));
     }
 
     @Test
     void validarRegraCampoRua_erroTamanho() {
+        var mockRua = FiltroDTO.builder()
+                .correlationEnumBusca(campoRua)
+                .valor("Rua")
+                .build();
         Assertions.assertThrows(ValidationException.class, () ->
-                CamposBuscaEnum.buscarEnumByCampo(campoRua).getRegra().validar(campoRua, "Rua"));
+                CamposBuscaEnum.buscarEnumByCampo(campoRua.getCampo()).getRegra().validar(mockRua));
     }
 
     @Test
     void validarRegraCampoRua_erroCaracterBloqueado() {
+        var mockRua = FiltroDTO.builder()
+                .correlationEnumBusca(campoRua)
+                .valor("Rua <>do Zé 123")
+                .build();
         Assertions.assertThrows(ValidationException.class, () ->
-                CamposBuscaEnum.buscarEnumByCampo(campoRua).getRegra().validar(campoRua, "Rua <>do Zé 123"));
+                CamposBuscaEnum.buscarEnumByCampo(campoRua.getCampo()).getRegra().validar(mockRua));
     }
 
     @Test
     void validarRegraCampoCidade_sucesso() {
+        var mockCidade = FiltroDTO.builder()
+                .correlationEnumBusca(campoRua)
+                .valor("Uberlândia")
+                .build();
         Assertions.assertDoesNotThrow(() ->
-                CamposBuscaEnum.buscarEnumByCampo(campoCidade).getRegra().validar(campoCidade, "Uberlândia"));
+                CamposBuscaEnum.buscarEnumByCampo(campoCidade.getCampo()).getRegra().validar(mockCidade));
     }
 
     @Test
     void validarRegraCampoCidade_erroTamanho() {
+        var mockCidade = FiltroDTO.builder()
+                .correlationEnumBusca(campoRua)
+                .valor("hum")
+                .build();
         Assertions.assertThrows(ValidationException.class, () ->
-                CamposBuscaEnum.buscarEnumByCampo(campoCidade).getRegra().validar(campoCidade, "hum"));
+                CamposBuscaEnum.buscarEnumByCampo(campoCidade.getCampo()).getRegra().validar(mockCidade));
     }
 
     @Test
     void validarRegraCampoCidade_erroCaracterBloqueado() {
+        var mockCidade = FiltroDTO.builder()
+                .correlationEnumBusca(campoRua)
+                .valor("Uberlândi<>a")
+                .build();
         Assertions.assertThrows(ValidationException.class, () ->
-                CamposBuscaEnum.buscarEnumByCampo(campoCidade).getRegra().validar(campoCidade, "Uberlândi<>a"));
+                CamposBuscaEnum.buscarEnumByCampo(campoCidade.getCampo()).getRegra().validar(mockCidade));
     }
 
     @Test
     void validarRegraCampoEstado_sucesso() {
+        var mockEstado = FiltroDTO.builder()
+                .correlationEnumBusca(campoEstado)
+                .valor("MG")
+                .build();
         Assertions.assertDoesNotThrow(() ->
-                CamposBuscaEnum.buscarEnumByCampo(campoEstado).getRegra().validar(campoCep, "MG"));
+                CamposBuscaEnum.buscarEnumByCampo(campoEstado.getCampo()).getRegra().validar(mockEstado));
     }
 
     @Test
     void validarRegraCampoEstado_erroTamanho() {
+        var mockEstado = FiltroDTO.builder()
+                .correlationEnumBusca(campoEstado)
+                .valor("M")
+                .build();
         Assertions.assertThrows(ValidationException.class, () ->
-                CamposBuscaEnum.buscarEnumByCampo(campoEstado).getRegra().validar(campoCep, "M"));
+                CamposBuscaEnum.buscarEnumByCampo(campoEstado.getCampo()).getRegra().validar(mockEstado));
     }
 
     @Test
     void validarRegraCampoEstado_erroCaracterBloqueado() {
+        var mockEstado = FiltroDTO.builder()
+                .correlationEnumBusca(campoEstado)
+                .valor("MG<")
+                .build();
         Assertions.assertThrows(ValidationException.class, () ->
-                CamposBuscaEnum.buscarEnumByCampo(campoEstado).getRegra().validar(campoCep, "MG<"));
+                CamposBuscaEnum.buscarEnumByCampo(campoEstado.getCampo()).getRegra().validar(mockEstado));
     }
 
     @Test
     void validarRegraCampoCep_sucesso() {
+        var mockCep = FiltroDTO.builder()
+                .correlationEnumBusca(campoCep)
+                .valor("00000000")
+                .build();
         Assertions.assertDoesNotThrow(() ->
-                CamposBuscaEnum.buscarEnumByCampo(campoCep).getRegra().validar(campoCep, "00000000"));
+                CamposBuscaEnum.buscarEnumByCampo(campoCep.getCampo()).getRegra().validar(mockCep));
     }
 
     @Test
     void validarRegraCampoCep_erroTamanho() {
+        var mockCep = FiltroDTO.builder()
+                .correlationEnumBusca(campoCep)
+                .valor("000000000")
+                .build();
         Assertions.assertThrows(ValidationException.class, () ->
-                CamposBuscaEnum.buscarEnumByCampo(campoCep).getRegra().validar(campoCep, "000000000"));
+                CamposBuscaEnum.buscarEnumByCampo(campoCep.getCampo()).getRegra().validar(mockCep));
     }
 
     @Test
     void validarRegraCampoCep_erroApenasNumeros() {
+        var mockCep = FiltroDTO.builder()
+                .correlationEnumBusca(campoCep)
+                .valor("0000<A00")
+                .build();
         Assertions.assertThrows(ValidationException.class, () ->
-                CamposBuscaEnum.buscarEnumByCampo(campoCep).getRegra().validar(campoCep, "0000<A00"));
+                CamposBuscaEnum.buscarEnumByCampo(campoCep.getCampo()).getRegra().validar(mockCep));
     }
 
     @Test
     void validarRegraCampoDataNascimento_sucesso() {
+        var mockDataNascimento = FiltroDTO.builder()
+                .correlationEnumBusca(campoCep)
+                .valor("24-01-2004")
+                .build();
         Assertions.assertDoesNotThrow(() ->
-                CamposBuscaEnum.buscarEnumByCampo(campoDataNascimento).getRegra().validar(campoDataNascimento, "24-01-2004"));
+                CamposBuscaEnum.buscarEnumByCampo(campoDataNascimento.getCampo()).getRegra().validar(mockDataNascimento ));
     }
 
     @Test
     void validarRegraCampoDataNascimento_erroTamanho() {
+        var mockDataNascimento = FiltroDTO.builder()
+                .correlationEnumBusca(campoCep)
+                .valor("24012004")
+                .build();
         Assertions.assertThrows(ValidationException.class, () ->
-                CamposBuscaEnum.buscarEnumByCampo(campoDataNascimento).getRegra().validar(campoDataNascimento, "24012004"));
+                CamposBuscaEnum.buscarEnumByCampo(campoDataNascimento.getCampo()).getRegra().validar(mockDataNascimento));
     }
 
     @Test
     void validarRegraCampoDataNascimento_erroCaracterBloqueado() {
+        var mockDataNascimento = FiltroDTO.builder()
+                .correlationEnumBusca(campoCep)
+                .valor("24'01'2004")
+                .build();
         Assertions.assertThrows(ValidationException.class, () ->
-                CamposBuscaEnum.buscarEnumByCampo(campoDataNascimento).getRegra().validar(campoDataNascimento, "24'01'2004"));
+                CamposBuscaEnum.buscarEnumByCampo(campoDataNascimento.getCampo()).getRegra().validar(mockDataNascimento));
     }
 
 }

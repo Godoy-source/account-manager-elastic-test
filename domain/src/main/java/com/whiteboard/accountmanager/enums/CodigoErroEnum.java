@@ -17,6 +17,7 @@ public enum CodigoErroEnum {
     EROO_DADOS_ENTRADA_CARACTER_NECESSARIO("Email inválido.", 400),
     ERRO_CONTA_ANTERIORMENTE_REGISTRADA("Os dados dessa conta ja se encontram nos nossos registros.", 400),
     ERRO_CONTA_NAO_ENCONTRADA("Não foi possivel encontrar os dados da conta.", 404),
+    ERRO_STATUS_NAO_ENCONTRADO("Existem somente 3 tipos de status para uma conta, são eles: A | B | D", 400),
     ERRO_FILTRO_NAO_ENCONTRADO("O Filtro requisitado não esta mapeado", 400);
     private String descricaoCodigo;
     private Integer codigoHttp;

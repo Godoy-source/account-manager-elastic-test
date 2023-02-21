@@ -2,6 +2,7 @@ package com.whiteboard.accountmanager.repository;
 
 import com.whiteboard.accountmanager.dto.AccountDTO;
 import com.whiteboard.accountmanager.dto.FiltroDTO;
+import com.whiteboard.accountmanager.dto.FiltrosRequestDTO;
 import com.whiteboard.accountmanager.exceptions.CadastroException;
 
 import java.io.IOException;
@@ -12,5 +13,5 @@ public interface AccountManagerRepository {
 
     AccountDTO getAccount(String usuarioId) throws IOException;
 
-    List<AccountDTO> findAccountByFilter(List<FiltroDTO> filtros) throws IOException, CadastroException;
+    List<AccountDTO> findAccountByFilter(FiltrosRequestDTO filtroRequestDTO) throws IOException, CadastroException;
 }

@@ -26,13 +26,15 @@ public class AccountController implements V1Api {
 
     @Override
     public ResponseEntity<AccountResponsePresentation> createNewUser(NewAccountRequestPresentation dadosConta) {
-        log.info("Iniciando registro de nova conta");
         try {
+            log.info("Iniciando registro de nova conta");
             var dadosEntradaMapeados = AccountMapper.mapearDadosEntrada(dadosConta);
-            ValidationUtils.validarCamposEntrada(dadosEntradaMapeados);
+            var convertMapToFiltro = AccountMapper.mapDadosEntradaToFiltrosDTO(dadosEntradaMapeados);
+            ValidationUtils.validarFiltros(convertMapToFiltro);
 
             var dadosContaDTO = AccountMapper.convertPresentationToDTO(dadosConta);
-            var registro = accountService.saveDataAccount(dadosContaDTO, dadosEntradaMapeados);
+            var pesquisarPor = FiltroMapper.chavesPrincipais(convertMapToFiltro);
+            var registro = accountService.saveDataAccount(dadosContaDTO, pesquisarPor);
             var mapearDadosContaResposta = AccountMapper.toAccountMapper(registro);
             log.info("Fim registro de nova conta");
             return ResponseEntity.ok().body(mapearDadosContaResposta);
@@ -45,7 +47,7 @@ public class AccountController implements V1Api {
     public ResponseEntity<AccountResponsePresentation> findUserByID(String usuarioId) {
         try {
             log.info("Iniciando busca conta por ID documento");
-            var busca = accountService.getUserAccount(usuarioId);
+            var busca = accountService.getUserAccountById(usuarioId);
             var mapearDadosContaResposta = AccountMapper.toAccountMapper(busca);
             log.info("Finalizando busca conta por ID documento");
             return ResponseEntity.ok().body(mapearDadosContaResposta);
@@ -58,10 +60,10 @@ public class AccountController implements V1Api {
     public ResponseEntity<List<AccountResponsePresentation>> findUserByFilter(FiltrosAccountRequestPresentation filtrosAccountRequestPresentation) {
         try {
             log.info("Iniciando busca de conta por filtros");
-            var filtrosDTO = FiltroMapper.toFiltroMapper(filtrosAccountRequestPresentation);
-            ValidationUtils.validarFiltros(filtrosDTO);
+            var filtroRequestDTO = FiltroMapper.toFiltroRequestMapper(filtrosAccountRequestPresentation);
+            ValidationUtils.validarFiltros(filtroRequestDTO.getFiltros());
 
-            var busca = accountService.searchAccounts(filtrosDTO);
+            var busca = accountService.searchAccounts(filtroRequestDTO);
             var mapearDadosContaResposta = AccountMapper.toAccountListMapper(busca);
             log.info("Fim busca de costas por filtros");
             return ResponseEntity.ok().body(mapearDadosContaResposta);

@@ -3,6 +3,7 @@ package com.whiteboard.accountmanager.utils;
 import com.whiteboard.accountmanager.enums.CodigoErroEnum;
 import com.whiteboard.accountmanager.exceptions.ValidationException;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -38,6 +39,14 @@ public class ValidationCamposUtils {
                                 .replace("@character", strChar)
                                 .replace("@campo", campo));
             }
+        }
+    }
+
+    public void validarValorExiste(String campo, String validar) throws ValidationException {
+        if (ObjectUtils.isEmpty(validar)) {
+            throw new ValidationException(CodigoErroEnum.ERRO_DADOS_ENTRADA_NULO,
+                    CodigoErroEnum.ERRO_DADOS_ENTRADA_NULO.getDescricaoCodigo()
+                            .replace("@campo", campo));
         }
     }
 }

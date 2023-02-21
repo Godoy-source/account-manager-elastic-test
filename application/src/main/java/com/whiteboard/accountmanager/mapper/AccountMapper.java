@@ -5,6 +5,7 @@ import com.codegen.rest.model.EnderecoPresentation;
 import com.codegen.rest.model.NewAccountRequestPresentation;
 import com.whiteboard.accountmanager.dto.AccountDTO;
 import com.whiteboard.accountmanager.dto.EnderecoDTO;
+import com.whiteboard.accountmanager.dto.FiltroDTO;
 import com.whiteboard.accountmanager.enums.CamposBuscaEnum;
 import com.whiteboard.accountmanager.utils.DataUtils;
 
@@ -20,7 +21,6 @@ public class AccountMapper {
         dataAcconutResponse.email(dadosConta.getEmail());
         dataAcconutResponse.endereco(toConvertEndereco(dadosConta.getEndereco()));
         dataAcconutResponse.dataNascimento(dadosConta.getDataNascimento());
-        //dataAcconutResponse.setStatus(dataAcconutResponse.getStatus().fromValue(dadosConta.getStatus()));
         dataAcconutResponse.dataInclusao(dadosConta.getDataInclusao());
         return dataAcconutResponse;
     }
@@ -35,7 +35,6 @@ public class AccountMapper {
             dataAcconutResponse.email(conta.getEmail());
             dataAcconutResponse.endereco(toConvertEndereco(conta.getEndereco()));
             dataAcconutResponse.dataNascimento(conta.getDataNascimento());
-            //dataAcconutResponse.setStatus(dataAcconutResponse.getStatus().fromValue(conta.getStatus()));
             dataAcconutResponse.dataInclusao(conta.getDataInclusao());
             listDataAcconutResponse.add(dataAcconutResponse);
         }
@@ -62,17 +61,30 @@ public class AccountMapper {
                 .build();
     }
 
-    public static HashMap<String, String> mapearDadosEntrada(NewAccountRequestPresentation dadosEntrada) {
-        var map = new HashMap<String, String>();
-        map.put(CamposBuscaEnum.CAMPO_NOME.getCampo(), dadosEntrada.getNome());
-        map.put(CamposBuscaEnum.CAMPO_CPF.getCampo(), dadosEntrada.getCpf());
-        map.put(CamposBuscaEnum.CAMPO_EMAIL.getCampo(), dadosEntrada.getEmail());
-        map.put(CamposBuscaEnum.CAMPO_CEP.getCampo(), dadosEntrada.getEndereco().getCep());
-        map.put(CamposBuscaEnum.CAMPO_RUA.getCampo(), dadosEntrada.getEndereco().getRua());
-        map.put(CamposBuscaEnum.CAMPO_CIDADE.getCampo(), dadosEntrada.getEndereco().getCidade());
-        map.put(CamposBuscaEnum.CAMPO_ESTADO.getCampo(), dadosEntrada.getEndereco().getEstado());
-        map.put(CamposBuscaEnum.CAMPO_DATA_NASCIMENTO.getCampo(), dadosEntrada.getDataNascimento().toString());
+    public static HashMap<CamposBuscaEnum, String> mapearDadosEntrada(NewAccountRequestPresentation dadosEntrada) {
+        var map = new HashMap<CamposBuscaEnum, String>();
+        map.put(CamposBuscaEnum.CAMPO_NOME, dadosEntrada.getNome());
+        map.put(CamposBuscaEnum.CAMPO_CPF, dadosEntrada.getCpf());
+        map.put(CamposBuscaEnum.CAMPO_EMAIL, dadosEntrada.getEmail());
+        map.put(CamposBuscaEnum.CAMPO_CEP, dadosEntrada.getEndereco().getCep());
+        map.put(CamposBuscaEnum.CAMPO_RUA, dadosEntrada.getEndereco().getRua());
+        map.put(CamposBuscaEnum.CAMPO_CIDADE, dadosEntrada.getEndereco().getCidade());
+        map.put(CamposBuscaEnum.CAMPO_ESTADO, dadosEntrada.getEndereco().getEstado());
+        map.put(CamposBuscaEnum.CAMPO_DATA_NASCIMENTO, dadosEntrada.getDataNascimento().toString());
         return map;
+    }
+
+    public static List<FiltroDTO> mapDadosEntradaToFiltrosDTO(HashMap<CamposBuscaEnum, String> dadosEntradaMapeados) {
+        var camposEntradaMap = new HashSet<>(dadosEntradaMapeados.keySet());
+        var filtros = new ArrayList<FiltroDTO>();
+
+        for (var campo : camposEntradaMap) {
+            filtros.add(FiltroDTO.builder()
+                    .correlationEnumBusca(campo)
+                    .valor(dadosEntradaMapeados.get(campo))
+                    .build());
+        }
+        return filtros;
     }
 
     private static EnderecoPresentation toConvertEndereco(EnderecoDTO endereco) {

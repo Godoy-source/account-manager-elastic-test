@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.whiteboard.accountmanager.configuration.AppConnections;
 import com.whiteboard.accountmanager.connections.elasticsearch.Connecting;
 import com.whiteboard.accountmanager.dto.AccountDTO;
-import com.whiteboard.accountmanager.dto.FiltroDTO;
+import com.whiteboard.accountmanager.dto.FiltrosRequestDTO;
 import com.whiteboard.accountmanager.enums.CodigoErroEnum;
 import com.whiteboard.accountmanager.exceptions.CadastroException;
 import com.whiteboard.accountmanager.mapper.QueryBuilder;
@@ -76,9 +76,9 @@ public class AccountManagerRepositoryImpl implements AccountManagerRepository {
     }
 
     @Override
-    public List<AccountDTO> findAccountByFilter(List<FiltroDTO> filtros) throws CadastroException {
-        log.info("Inicio consulta contas");
+    public List<AccountDTO> findAccountByFilter(FiltrosRequestDTO filtroRequestDTO) throws CadastroException {
         try {
+            log.info("Inicio consulta contas");
             Gson gson = new Gson();
             ArrayList<AccountDTO> contas = new ArrayList<>();
             // Fazer sistema de paginação
@@ -87,8 +87,7 @@ public class AccountManagerRepositoryImpl implements AccountManagerRepository {
                             .size(100)
                             .from(0)
                             .query(q -> q
-                                    .bool(b -> b
-                                            .should(QueryBuilder.montarFiltros(filtros)))),
+                                    .bool(QueryBuilder.montarTipoBusca(filtroRequestDTO))),
                     ObjectNode.class);
 
             for (var hit : response.hits().hits()) {

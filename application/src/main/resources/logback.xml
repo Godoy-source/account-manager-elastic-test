@@ -9,7 +9,7 @@
         <file>logs/logfile.log</file>
         <append>true</append>
         <encoder>
-            <Pattern>{"application_name": "account-manager", "timestamp": "%d{yyyy-MM-dd HH:mm:ss}","level": "%-5level","logger": "%logger{0}","thread": "%thread","message": "%msg"}%n</Pattern>
+            <Pattern>{"application_name": "account-manager", "timestamp": "%d{yyyy-MM-dd HH:mm:ss}","level": "%-5level","logger": "%logger{0}","thread": "%thread","message": "%replace(%msg){'\n', ''}"}%n</Pattern>
         </encoder>
     </appender>
     <root level="info" additivity="false">
