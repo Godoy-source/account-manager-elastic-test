@@ -1,11 +1,10 @@
 package com.whiteboard.accountmanager.repository;
 
 import com.whiteboard.accountmanager.dto.AccountDTO;
-import com.whiteboard.accountmanager.enums.CamposBuscaEnum;
+import com.whiteboard.accountmanager.dto.FiltroDTO;
 import com.whiteboard.accountmanager.exceptions.CadastroException;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 public interface AccountManagerRepository {
@@ -13,5 +12,5 @@ public interface AccountManagerRepository {
 
     AccountDTO getAccount(String usuarioId) throws IOException;
 
-    List<AccountDTO> findAccountByFilter(HashMap<String, String> dadosEntradaMapeados, List<CamposBuscaEnum> filtros) throws IOException;
+    List<AccountDTO> findAccountByFilter(List<FiltroDTO> filtros) throws IOException, CadastroException;
 }

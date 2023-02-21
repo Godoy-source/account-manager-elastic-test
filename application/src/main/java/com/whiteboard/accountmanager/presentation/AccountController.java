@@ -6,6 +6,7 @@ import com.codegen.rest.model.AccountResponsePresentation;
 import com.codegen.rest.model.FiltrosAccountRequestPresentation;
 import com.codegen.rest.model.NewAccountRequestPresentation;
 import com.whiteboard.accountmanager.mapper.AccountMapper;
+import com.whiteboard.accountmanager.mapper.FiltroMapper;
 import com.whiteboard.accountmanager.presentation.exception.ExceptionHandler;
 import com.whiteboard.accountmanager.service.AccountService;
 import com.whiteboard.accountmanager.utils.ValidationUtils;
@@ -25,11 +26,13 @@ public class AccountController implements V1Api {
 
     @Override
     public ResponseEntity<AccountResponsePresentation> createNewUser(NewAccountRequestPresentation dadosConta) {
+        log.info("Iniciando registro de nova conta");
         try {
-            log.info("Iniciando registro de nova conta");
             var dadosEntradaMapeados = AccountMapper.mapearDadosEntrada(dadosConta);
             ValidationUtils.validarCampos(dadosEntradaMapeados);
-            var registro = accountService.saveDataAccount(dadosConta, dadosEntradaMapeados);
+
+            var dadosContaDTO = AccountMapper.convertPresentationToDTO(dadosConta);
+            var registro = accountService.saveDataAccount(dadosContaDTO, dadosEntradaMapeados);
             var mapearDadosContaResposta = AccountMapper.toAccountMapper(registro);
             log.info("Fim registro de nova conta");
             return ResponseEntity.ok().body(mapearDadosContaResposta);
@@ -55,9 +58,13 @@ public class AccountController implements V1Api {
     public ResponseEntity<List<AccountResponsePresentation>> findUserByFilter(FiltrosAccountRequestPresentation filtrosAccountRequestPresentation) {
         try {
             log.info("Iniciando busca de conta por filtros");
-            //var busca =
+            var filtrosDTO = FiltroMapper.toFiltroMapper(filtrosAccountRequestPresentation);
+            ValidationUtils.validarFiltros(filtrosDTO);
+
+            var busca = accountService.searchAccounts(filtrosDTO);
+            var mapearDadosContaResposta = AccountMapper.toAccountListMapper(busca);
             log.info("Fim busca de costas por filtros");
-            return null;
+            return ResponseEntity.ok().body(mapearDadosContaResposta);
         } catch (Exception e) {
             return ExceptionHandler.handle(e);
         }

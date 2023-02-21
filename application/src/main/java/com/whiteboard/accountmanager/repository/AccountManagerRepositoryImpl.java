@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.whiteboard.accountmanager.configuration.AppConnections;
 import com.whiteboard.accountmanager.connections.elasticsearch.Connecting;
 import com.whiteboard.accountmanager.dto.AccountDTO;
-import com.whiteboard.accountmanager.enums.CamposBuscaEnum;
+import com.whiteboard.accountmanager.dto.FiltroDTO;
 import com.whiteboard.accountmanager.enums.CodigoErroEnum;
 import com.whiteboard.accountmanager.exceptions.CadastroException;
 import com.whiteboard.accountmanager.mapper.QueryBuilder;
@@ -16,7 +16,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -77,25 +76,30 @@ public class AccountManagerRepositoryImpl implements AccountManagerRepository {
     }
 
     @Override
-    public List<AccountDTO> findAccountByFilter(HashMap<String, String> dadosEntradaMapeados, List<CamposBuscaEnum> filtros) throws IOException {
+    public List<AccountDTO> findAccountByFilter(List<FiltroDTO> filtros) throws CadastroException {
         log.info("Inicio consulta contas");
-        ArrayList<AccountDTO> contas = new ArrayList<>();
-        // Fazer sistema de paginação
-        var response = Connecting.getClient().search(s -> s
-                        .index("white-board-accounts")
-                        .size(100)
-                        .from(0)
-                        .query(q -> q
-                                .bool(b -> b
-                                        .should(QueryBuilder.montarFiltros(dadosEntradaMapeados, filtros)))),
-                ObjectNode.class);
-        for (var hit : response.hits().hits()) {
+        try {
             Gson gson = new Gson();
-            var emp = gson.fromJson(hit.source().toString(), AccountDTO.class);
-            contas.add(emp);
+            ArrayList<AccountDTO> contas = new ArrayList<>();
+            // Fazer sistema de paginação
+            var response = Connecting.getClient().search(s -> s
+                            .index("white-board-accounts")
+                            .size(100)
+                            .from(0)
+                            .query(q -> q
+                                    .bool(b -> b
+                                            .should(QueryBuilder.montarFiltros(filtros)))),
+                    ObjectNode.class);
+
+            for (var hit : response.hits().hits()) {
+                var emp = gson.fromJson(hit.source().toString(), AccountDTO.class);
+                contas.add(emp);
+            }
+            log.info("Fim de consulta de contas, total de contas encontradas: {}", contas.size());
+            return contas;
+        } catch (IOException e) {
+            throw new CadastroException(CodigoErroEnum.ERRO_INTERO);
         }
-        log.info("Fim de consulta de contas, total de contas encontradas: {}", contas.size());
-        return contas;
     }
 
     public boolean verifyDocExists(String usuarioId) throws IOException {

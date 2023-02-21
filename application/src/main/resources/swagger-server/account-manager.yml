@@ -194,17 +194,18 @@ components:
       type: object
       properties:
         filtros:
-          $ref: '#/components/schemas/FiltrosModels'
+          type: array
+          items:
+            $ref: '#/components/schemas/FiltrosModels'
     FiltrosModels:
-      type: array
-      items:
-        properties:
-          campo:
-            type: string
-            enum: ["nome", "cpf", "email", "dataNascimento", "status", "dataInclusao"]
-          valor:
-            type: string
-            example: "00000000000"
+      type: object
+      properties:
+        campo:
+          type: string
+          enum: ["nome", "cpf", "email", "dataNascimento", "status", "dataInclusao"]
+        valor:
+          type: string
+          example: "00000000000"
 
 
 
