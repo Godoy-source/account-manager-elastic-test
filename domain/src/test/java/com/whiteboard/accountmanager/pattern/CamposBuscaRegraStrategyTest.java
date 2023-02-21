@@ -1,7 +1,7 @@
 package com.whiteboard.accountmanager.pattern;
 
 import com.whiteboard.accountmanager.enums.CamposBuscaEnum;
-import com.whiteboard.accountmanager.exceptions.CadastroException;
+import com.whiteboard.accountmanager.exceptions.ValidationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -24,13 +24,13 @@ public class CamposBuscaRegraStrategyTest {
 
     @Test
     void validarRegraCampoNome_erroCaracterBloqueado() {
-        Assertions.assertThrows(CadastroException.class, () ->
+        Assertions.assertThrows(ValidationException.class, () ->
                 CamposBuscaEnum.buscarEnumByCampo(campoNome).getRegra().validar(campoNome, "@Gabriel!<>"));
     }
 
     @Test
     void validarRegraCampoNome_erroTamanho() {
-        Assertions.assertThrows(CadastroException.class, () ->
+        Assertions.assertThrows(ValidationException.class, () ->
                 CamposBuscaEnum.buscarEnumByCampo(campoNome).getRegra().validar(campoNome, "Ga"));
     }
 
@@ -42,13 +42,13 @@ public class CamposBuscaRegraStrategyTest {
 
     @Test
     void validarRegraCampoCpf_erroTamanho() {
-        Assertions.assertThrows(CadastroException.class, () ->
+        Assertions.assertThrows(ValidationException.class, () ->
                 CamposBuscaEnum.buscarEnumByCampo(campoCpf).getRegra().validar(campoCpf, "000000000000"));
     }
 
     @Test
     void validarRegraCampoCpf_erroSomenteNumeros() {
-        Assertions.assertThrows(CadastroException.class, () ->
+        Assertions.assertThrows(ValidationException.class, () ->
                 CamposBuscaEnum.buscarEnumByCampo(campoCpf).getRegra().validar(campoCpf, "0000000A000"));
     }
 
@@ -60,19 +60,19 @@ public class CamposBuscaRegraStrategyTest {
 
     @Test
     void validarRegraCampoEmail_erroCaracterBloqueado() {
-        Assertions.assertThrows(CadastroException.class, () ->
+        Assertions.assertThrows(ValidationException.class, () ->
                 CamposBuscaEnum.buscarEnumByCampo(campoEmail).getRegra().validar(campoEmail, "@Gabriel!<>"));
     }
 
     @Test
     void validarRegraCampoEmail_erroTamanho() {
-        Assertions.assertThrows(CadastroException.class, () ->
+        Assertions.assertThrows(ValidationException.class, () ->
                 CamposBuscaEnum.buscarEnumByCampo(campoEmail).getRegra().validar(campoEmail, "ga"));
     }
 
     @Test
     void validarRegraCampoEmail_erroCaracterNecessario() {
-        Assertions.assertThrows(CadastroException.class, () ->
+        Assertions.assertThrows(ValidationException.class, () ->
                 CamposBuscaEnum.buscarEnumByCampo(campoEmail).getRegra().validar(campoEmail, "gabrielinaciodevgmail.com"));
     }
 
@@ -84,13 +84,13 @@ public class CamposBuscaRegraStrategyTest {
 
     @Test
     void validarRegraCampoRua_erroTamanho() {
-        Assertions.assertThrows(CadastroException.class, () ->
+        Assertions.assertThrows(ValidationException.class, () ->
                 CamposBuscaEnum.buscarEnumByCampo(campoRua).getRegra().validar(campoRua, "Rua"));
     }
 
     @Test
     void validarRegraCampoRua_erroCaracterBloqueado() {
-        Assertions.assertThrows(CadastroException.class, () ->
+        Assertions.assertThrows(ValidationException.class, () ->
                 CamposBuscaEnum.buscarEnumByCampo(campoRua).getRegra().validar(campoRua, "Rua <>do Zé 123"));
     }
 
@@ -102,13 +102,13 @@ public class CamposBuscaRegraStrategyTest {
 
     @Test
     void validarRegraCampoCidade_erroTamanho() {
-        Assertions.assertThrows(CadastroException.class, () ->
+        Assertions.assertThrows(ValidationException.class, () ->
                 CamposBuscaEnum.buscarEnumByCampo(campoCidade).getRegra().validar(campoCidade, "hum"));
     }
 
     @Test
     void validarRegraCampoCidade_erroCaracterBloqueado() {
-        Assertions.assertThrows(CadastroException.class, () ->
+        Assertions.assertThrows(ValidationException.class, () ->
                 CamposBuscaEnum.buscarEnumByCampo(campoCidade).getRegra().validar(campoCidade, "Uberlândi<>a"));
     }
 
@@ -120,13 +120,13 @@ public class CamposBuscaRegraStrategyTest {
 
     @Test
     void validarRegraCampoEstado_erroTamanho() {
-        Assertions.assertThrows(CadastroException.class, () ->
+        Assertions.assertThrows(ValidationException.class, () ->
                 CamposBuscaEnum.buscarEnumByCampo(campoEstado).getRegra().validar(campoCep, "M"));
     }
 
     @Test
     void validarRegraCampoEstado_erroCaracterBloqueado() {
-        Assertions.assertThrows(CadastroException.class, () ->
+        Assertions.assertThrows(ValidationException.class, () ->
                 CamposBuscaEnum.buscarEnumByCampo(campoEstado).getRegra().validar(campoCep, "MG<"));
     }
 
@@ -138,13 +138,13 @@ public class CamposBuscaRegraStrategyTest {
 
     @Test
     void validarRegraCampoCep_erroTamanho() {
-        Assertions.assertThrows(CadastroException.class, () ->
+        Assertions.assertThrows(ValidationException.class, () ->
                 CamposBuscaEnum.buscarEnumByCampo(campoCep).getRegra().validar(campoCep, "000000000"));
     }
 
     @Test
     void validarRegraCampoCep_erroApenasNumeros() {
-        Assertions.assertThrows(CadastroException.class, () ->
+        Assertions.assertThrows(ValidationException.class, () ->
                 CamposBuscaEnum.buscarEnumByCampo(campoCep).getRegra().validar(campoCep, "0000<A00"));
     }
 
@@ -156,13 +156,13 @@ public class CamposBuscaRegraStrategyTest {
 
     @Test
     void validarRegraCampoDataNascimento_erroTamanho() {
-        Assertions.assertThrows(CadastroException.class, () ->
+        Assertions.assertThrows(ValidationException.class, () ->
                 CamposBuscaEnum.buscarEnumByCampo(campoDataNascimento).getRegra().validar(campoDataNascimento, "24012004"));
     }
 
     @Test
     void validarRegraCampoDataNascimento_erroCaracterBloqueado() {
-        Assertions.assertThrows(CadastroException.class, () ->
+        Assertions.assertThrows(ValidationException.class, () ->
                 CamposBuscaEnum.buscarEnumByCampo(campoDataNascimento).getRegra().validar(campoDataNascimento, "24'01'2004"));
     }
 
