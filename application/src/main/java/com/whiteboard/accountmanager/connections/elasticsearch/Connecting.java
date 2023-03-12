@@ -22,9 +22,11 @@ import java.io.IOException;
 public class Connecting {
 
     private static ElasticsearchClient client = new ElasticsearchClient(null);
+    private static RestClientBuilder restClient = null;
+    private static ElasticsearchTransport transport = null;
 
     @Bean
-    private void createClient() throws IOException {
+    public static void createClient() {
         log.info("Conectando com elastic");
 
         final CredentialsProvider credentialsProvider =
@@ -32,16 +34,21 @@ public class Connecting {
         credentialsProvider.setCredentials(AuthScope.ANY,
                 new UsernamePasswordCredentials("elastic", "changeme"));
 
-        RestClientBuilder restClient = RestClient.builder(
+        restClient = RestClient.builder(
                 new HttpHost("localhost", 9200, "http"))
                 .setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder
                         .setDefaultCredentialsProvider(credentialsProvider));
 
-        ElasticsearchTransport transport = new RestClientTransport(
+        transport = new RestClientTransport(
                 restClient.build(), new JacksonJsonpMapper());
         client = new ElasticsearchClient(transport);
     }
 
+    public static void closeClient() throws IOException {
+        log.info("Finalizando conexão com elastic");
+        restClient.build().close();
+        transport.close();
+    }
     public static final ElasticsearchClient getClient() {
         return client;
     }

@@ -29,12 +29,12 @@
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-client</artifactId>
-            <version>8.6.0</version>
+            <version>8.6.2</version>
         </dependency>
         <dependency>
             <groupId>co.elastic.clients</groupId>
             <artifactId>elasticsearch-java</artifactId>
-            <version>8.6.0</version>
+            <version>8.6.2</version>
         </dependency>
         <!-- Gson -->
         <dependency>

@@ -1,4 +1,4 @@
-package com.whiteboard.accountmanager.mapper;
+package com.whiteboard.accountmanager.search;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchPhraseQuery;
@@ -12,11 +12,11 @@ import java.util.List;
 
 public class QueryBuilder {
 
-    public static BoolQuery montarTipoBusca(FiltrosRequestDTO filtroRequestDTO) {
+    public static Query montarTipoBusca(FiltrosRequestDTO filtroRequestDTO) {
         if (filtroRequestDTO.getTipoBusca().equals(TipoBuscaEnum.FILTRAR)) {
-            return BoolQuery.of(builder -> builder.filter(QueryBuilder.montarFiltros(filtroRequestDTO.getFiltros())));
+            return BoolQuery.of(builder -> builder.filter(QueryBuilder.montarFiltros(filtroRequestDTO.getFiltros())))._toQuery();
         } else {
-            return BoolQuery.of(builder -> builder.should(QueryBuilder.montarFiltros(filtroRequestDTO.getFiltros())));
+            return BoolQuery.of(builder -> builder.should(QueryBuilder.montarFiltros(filtroRequestDTO.getFiltros())))._toQuery();
         }
     }
 

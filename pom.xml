@@ -38,6 +38,11 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>co.elastic.apm</groupId>
+            <artifactId>elastic-apm-agent</artifactId>
+            <version>1.27.0</version>
+        </dependency>
         <!-- Spring Starter -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

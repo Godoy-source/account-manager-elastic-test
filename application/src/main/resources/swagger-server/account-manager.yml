@@ -83,6 +83,15 @@ paths:
       operationId: findUserByFilter
       summary: Procura por usuários usando filtros
       description: Busca por usuários no banco de dados de acordo com os filtros.
+      parameters:
+        - in: query
+          name: pagina
+          schema:
+            type: integer
+        - in: query
+          name: tamanhoPagina
+          schema:
+            type: integer
       requestBody:
         description: Filtros
         content:

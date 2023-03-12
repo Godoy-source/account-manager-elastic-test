@@ -57,7 +57,7 @@ public class AccountController implements V1Api {
     }
 
     @Override
-    public ResponseEntity<List<AccountResponsePresentation>> findUserByFilter(FiltrosAccountRequestPresentation filtrosAccountRequestPresentation) {
+    public ResponseEntity<List<AccountResponsePresentation>> findUserByFilter(Integer pagina, Integer tamanhoPagina, FiltrosAccountRequestPresentation filtrosAccountRequestPresentation) {
         try {
             log.info("Iniciando busca de conta por filtros");
             var filtroRequestDTO = FiltroMapper.toFiltroRequestMapper(filtrosAccountRequestPresentation);
