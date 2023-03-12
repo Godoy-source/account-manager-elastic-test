@@ -1,7 +1,6 @@
 package com.whiteboard.accountmanager.repository;
 
 import com.whiteboard.accountmanager.dto.AccountDTO;
-import com.whiteboard.accountmanager.dto.FiltroDTO;
 import com.whiteboard.accountmanager.dto.FiltrosRequestDTO;
 import com.whiteboard.accountmanager.exceptions.CadastroException;
 

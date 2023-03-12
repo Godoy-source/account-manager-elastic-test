@@ -60,7 +60,7 @@ public class AccountController implements V1Api {
     public ResponseEntity<List<AccountResponsePresentation>> findUserByFilter(Integer pagina, Integer tamanhoPagina, FiltrosAccountRequestPresentation filtrosAccountRequestPresentation) {
         try {
             log.info("Iniciando busca de conta por filtros");
-            var filtroRequestDTO = FiltroMapper.toFiltroRequestMapper(filtrosAccountRequestPresentation);
+            var filtroRequestDTO = FiltroMapper.toFiltroRequestMapper(pagina, tamanhoPagina, filtrosAccountRequestPresentation);
             ValidationUtils.validarFiltros(filtroRequestDTO.getFiltros());
 
             var busca = accountService.searchAccounts(filtroRequestDTO);

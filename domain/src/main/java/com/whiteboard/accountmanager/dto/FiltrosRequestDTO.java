@@ -15,4 +15,6 @@ import java.util.List;
 public class FiltrosRequestDTO {
     private List<FiltroDTO> filtros;
     private TipoBuscaEnum tipoBusca;
+    private Integer pagina;
+    private Integer tamanhoPagina;
 }

@@ -9,22 +9,13 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class AccountDTO {
-    @JsonProperty("id")
     private String id;
-    @JsonProperty("documento_id")
     private String documento_id;
-    @JsonProperty("nome")
     private String nome;
-    @JsonProperty("cpf")
     private String cpf;
-    @JsonProperty("email")
     private String email;
-    @JsonProperty("endereco")
     private EnderecoDTO endereco;
-    @JsonProperty("dataNascimento")
     private String dataNascimento;
-    @JsonProperty("status")
     private String status;
-    @JsonProperty("dataInclusao")
     private String dataInclusao;
 }

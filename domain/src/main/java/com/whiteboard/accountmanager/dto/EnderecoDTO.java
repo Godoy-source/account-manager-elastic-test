@@ -9,12 +9,8 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class EnderecoDTO {
-    @JsonProperty("rua")
     private String rua;
-    @JsonProperty("cidade")
     private String cidade;
-    @JsonProperty("estado")
     private String estado;
-    @JsonProperty("cep")
     private String cep;
 }

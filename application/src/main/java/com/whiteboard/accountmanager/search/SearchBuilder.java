@@ -14,8 +14,8 @@ public class SearchBuilder {
     public static SearchResponse<ObjectNode> search(FiltrosRequestDTO filtroRequestDTO) throws IOException {
         var pesquisa = Connecting.getClient().search(s -> s
                         .index(INDEX_CONTAS)
-                        .size(100)
-                        .from(0)
+                        .size(filtroRequestDTO.getTamanhoPagina())
+                        .from(filtroRequestDTO.getPagina() * filtroRequestDTO.getTamanhoPagina())
                         .query(QueryBuilder.montarTipoBusca(filtroRequestDTO)),
                 ObjectNode.class);
         return pesquisa;

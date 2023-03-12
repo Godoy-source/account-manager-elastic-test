@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FiltroMapper {
-    public static FiltrosRequestDTO toFiltroRequestMapper(FiltrosAccountRequestPresentation filtrosAccountRequestPresentation) {
+    public static FiltrosRequestDTO toFiltroRequestMapper(Integer pagina, Integer tamanhoPagina, FiltrosAccountRequestPresentation filtrosAccountRequestPresentation) {
         return FiltrosRequestDTO.builder()
                 .tipoBusca(TipoBuscaEnum.buscarEnumByTipo(filtrosAccountRequestPresentation.getModo().getValue()))
                 .filtros(filtrosAccountRequestPresentation.getFiltros()
@@ -22,6 +22,8 @@ public class FiltroMapper {
                                 .valor(filtro.getValor())
                                 .build())
                         .collect(Collectors.toList()))
+                .pagina(pagina)
+                .tamanhoPagina(tamanhoPagina)
                 .build();
     }
 
