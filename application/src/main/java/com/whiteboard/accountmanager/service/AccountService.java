@@ -5,7 +5,7 @@ import com.whiteboard.accountmanager.dto.AccountDTO;
 import com.whiteboard.accountmanager.dto.FiltrosRequestDTO;
 import com.whiteboard.accountmanager.enums.CodigoErroEnum;
 import com.whiteboard.accountmanager.exceptions.CadastroException;
-import com.whiteboard.accountmanager.repository.AccountManagerRepositoryImpl;
+import com.whiteboard.accountmanager.repository.ElasticRepositoryImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 public class AccountService {
-    private AccountManagerRepositoryImpl repository;
+    private ElasticRepositoryImpl repository;
 
     public AccountDTO saveDataAccount(AccountDTO dadosConta, FiltrosRequestDTO filtros) throws CadastroException {
         var contaExistente = repository.findAccountByFilter(filtros);

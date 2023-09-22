@@ -1,6 +1,10 @@
 spring:
   application:
     name: account-manager
+
+variables:
+  logstash: http://localhost:8080
+  indiceAccounts: white-board-accounts
 server:
   port: 9090
 logging:

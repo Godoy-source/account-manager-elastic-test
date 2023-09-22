@@ -10,7 +10,7 @@ import java.util.List;
 
 @UtilityClass
 public class ValidationCamposUtils {
-    private static final List<String> charactersBloqueados = List.of("<", ">", "/", "[", "]", "'", "^", "!");
+    private static final List<String> charactersBloqueados = List.of("<", ">", "/", "[", "]", "'", "^", "!", ":");
 
     public void validarSomenteNumeros(String campo, String validar) throws ValidationException {
         if (!StringUtils.isNumeric(validar)) {
